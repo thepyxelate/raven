@@ -19,18 +19,36 @@ Firebase sozlanmaguncha boshqa haydovchilar botlar bo'ladi. Shu brauzerda ikkinc
 ## Papkalar
 
 ```
-index.html            sahifa (menyu, HUD)
-src/main.js           kirish nuqtasi
-src/game.js           o'yinning o'zi: garaj, shahar, fizika, ovoz, HUD
-src/style.css         ko'rinish
-src/audio/            dvigatel halqalari va turbo yozuvi (ma'lumot)
-src/net/config.js     Firebase sozlamalari (siz to'ldirasiz)
-src/net/firebase.js   Firebase orqali multiplayer
-src/net/connect.js    transport tanlash
-database.rules.json   Firebase xavfsizlik qoidalari
+index.html              sahifa (menyu, HUD)
+vite.config.js          build sozlamalari va src/game/ qismlarini birlashtiruvchi plagin
+src/main.js             kirish nuqtasi
+src/style.css           ko'rinish
+src/game/               o'yinning o'zi, sohalar bo'yicha 39 ta qism (pastda)
+src/lib/canvas.js       canvas va tekstura yordamchilari
+src/world/signs.js      shahar yozuvlari: 64 ta biznes dizayni, ikonkalar, billboardlar
+src/audio/voices.js     har bir mashinaning dvigatel ovozi profili va sintez funksiyalari
+src/audio/engine.bin    yozib olingan dvigatel halqalari (16-bit PCM), engineMeta.js ularning ro'yxati
+src/audio/flutter.mp3   turbo "stu-tu-tu" yozuvi
+src/net/                Firebase multiplayer (config.js ni siz to'ldirasiz)
+public/cars/            GLB mashinalar (Supra, RX-7, M4, Audi 90)
+database.rules.json     Firebase xavfsizlik qoidalari
 ```
 
-`src/game.js` hali bitta katta fayl (5 mingdan ortiq qator). Ichida bo'limlar izohlar bilan ajratilgan.
+### src/game/ qanday ishlaydi
+
+O'yin kodi `src/game/NN-nom.js` fayllariga bo'lingan: `00-config.js`, `06-car-geometry.js`, `13-physics.js`,
+`16-audio.js`, `24-world-build.js`, `29-driving.js`, `37-ambulance.js` va hokazo. Bu fayllar bitta umumiy scope'da
+ishlaydi: `vite.config.js` dagi `raven-game-parts` plagini ularni fayl nomi tartibida birlashtiradi va source map
+beradi. Shuning uchun brauzerdagi xatolar va breakpoint'lar to'g'ri fayl va qatorni ko'rsatadi.
+
+- Yangi kodni o'sha sohaga tegishli faylga qo'shing. Kod yuqoridan pastga, xuddi bitta fayldek ishlaydi.
+- Boshqa kodga bog'liq bo'lmagan qismlar oddiy ES modul sifatida chiqarilgan (`src/lib`, `src/world`, `src/audio`)
+  va `import` bilan olinadi. Yangi mustaqil qismlarni ham shunday chiqaring.
+
+### Grafika sifati
+
+Garajdagi **Quality** tugmasi: Auto, High, Medium, Low va **Eco**. Eco rejimi grafikani Low qiladi va shahar hamda
+poygada kadrlarni 30 fps bilan cheklaydi. Noutbuk qizimaydi va batareyani tejaydi.
 
 ## Firebase multiplayer
 

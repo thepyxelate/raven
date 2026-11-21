@@ -5,3 +5,6 @@ dist
 
 # original car models (optimized copies live in public/cars)
 /*.glb
+
+reports
+research_notes
